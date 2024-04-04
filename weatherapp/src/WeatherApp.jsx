@@ -1,7 +1,7 @@
 
 
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import backgroundImage from './media/bg.jpg';
 import weatherimg from "./media/right.jpg";
 import { IoSearchCircle } from 'react-icons/io5';
@@ -55,6 +55,9 @@ if (cityName) {
         setCityName("");
         refElement.current.focus();
     }
+    useEffect(()=>{
+        handleSearch();
+    },[])
 
 
     return (
