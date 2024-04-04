@@ -1,7 +1,7 @@
 
 
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import backgroundImage from './media/bg.jpg';
 import weatherimg from "./media/right.jpg";
 import { IoSearchCircle } from 'react-icons/io5';
@@ -11,11 +11,19 @@ function WeatherApp() {
     const [weather, setWeather] = useState({});
     const [f, setF] = useState();
     const [errorMessage, setErrorMessage] = useState("");
+    const refElement = useRef("")
 
     // let f = ((weather.main?.temp*9/5)+32).toFixed(4);
     const handleChange = (e) => {
         setCityName(e.target.value);
+        
     }
+   const handleKeyDown = (e)=>{
+        if(e.key==='Enter'){
+            handleSearch();
+            setCityName("")
+        }
+            }
 
     const handleSearch = () => {
         const apiKey = "bf32cb1400391ae9d331d6f0dbadd74c";
@@ -27,10 +35,12 @@ if (cityName) {
         .then((data) => data.json())
         .then((res) => {
             setWeather(res);
-            const fahrenheit = ((res.main?.temp * 9 / 5) + 32).toFixed(4); 
+            const fahrenheit = ((res.main?.temp * 9 / 5) + 32).toFixed(3); 
             setF(fahrenheit); 
             if (res.cod && res.cod === "404") {
-                setErrorMessage("City not found. Please try again.");
+               
+                setErrorMessage(`City ${cityName} not found. Please try again.`);
+
             } else {
                 setWeather(res);
                 setErrorMessage("");
@@ -42,7 +52,10 @@ if (cityName) {
             setErrorMessage("An error occurred. Please try again later.");
         });
         }
+        setCityName("");
+        refElement.current.focus();
     }
+
 
     return (
         <div className='bg-image bg-cover bg-no-repeat h-screen flex justify-center items-center' style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -80,7 +93,7 @@ if (cityName) {
                         <img src={`http://openweathermap.org/img/wn/${weather.weather?.[0]?.icon}@2x.png`} alt='' className='rounded-full bg-[#ffffff85] w-1/5' />
                     </div>
                     <div className='flex border border-gray-200 rounded-lg w-3/5 mx-auto'>
-                        <input type='search' onChange={handleChange} value={cityName} placeholder='Search' className='bg-transparent outline-none text-white placeholder-white px-2 py-1' />
+                        <input type='search'ref={refElement} onChange={handleChange} onKeyDown={handleKeyDown} value={cityName} placeholder='Search' className='bg-transparent outline-none text-white placeholder-white px-2 py-1' />
                         <IoSearchCircle onClick={handleSearch} color='white' className='text-3xl cursor-pointer' />
                         
                     </div>
