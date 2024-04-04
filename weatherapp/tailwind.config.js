@@ -8,6 +8,7 @@ module.exports = {
       "image":
       "url('/src/media/right.jpg')",
       "left":"url('/src/media/right.jpg)"
+      
     },
   },
   plugins: [],
