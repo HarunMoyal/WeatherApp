@@ -121,6 +121,7 @@ if (cityName) {
                     )}
                     <div className='flex justify-around font-bold text-white border-b border-gray-300 m-6 p-2'>
                         <p>Wind Speed</p>
+                        
                         <p>{weather.wind?.speed}meter/sec</p>
                     </div>
                 </div>
